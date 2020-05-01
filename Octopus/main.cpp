@@ -28,30 +28,6 @@ void performSDLCleanup(SDL_Window *window, SDL_Renderer *renderer) {
     }
 }
 
-SDL_Texture *loadTexture(const std::string &filepath, SDL_Renderer *renderer) {
-    SDL_Texture *texture = nullptr;
-    SDL_Surface *loadedImage = SDL_LoadBMP(filepath.c_str());
-    
-    if (loadedImage != nullptr) {
-        texture = SDL_CreateTextureFromSurface(renderer, loadedImage);
-        SDL_FreeSurface(loadedImage);
-        if (texture == nullptr) {
-            logSDLError(std::cerr, "SDL_CreateTextureFromSurface");
-        }
-    } else {
-        logSDLError(std::cerr, "SDL_LoadBMP");
-    }
-    return texture;
-}
-
-void renderTexture(SDL_Texture *tex, SDL_Renderer *renderer, int x, int y) {
-    SDL_Rect dst;
-    dst.x = x;
-    dst.y = y;
-    SDL_QueryTexture(tex, nullptr, nullptr, &dst.w, &dst.h);
-    SDL_RenderCopy(renderer, tex, NULL, &dst);
-}
-
 int main(int argc, const char **argv) {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
         logSDLError(std::cerr, "SDL_Init");
