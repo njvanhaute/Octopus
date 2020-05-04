@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9528CAFC245B794D009D7787 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9528CAFB245B794D009D7787 /* main.cpp */; };
 		9528CB04245B9A01009D7787 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9528CB03245B9A01009D7787 /* SDL2.framework */; };
 		9528CB05245B9A01009D7787 /* SDL2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9528CB03245B9A01009D7787 /* SDL2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		95F4B00E245F8C4800BF7BF0 /* Graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95F4B00C245F8C4800BF7BF0 /* Graphics.cpp */; };
+		95F4B010245F93A300BF7BF0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95F4B00F245F93A300BF7BF0 /* main.cpp */; };
+		95F4B013245F950E00BF7BF0 /* OctopusCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95F4B011245F950E00BF7BF0 /* OctopusCore.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,8 +39,12 @@
 
 /* Begin PBXFileReference section */
 		9528CAF8245B794D009D7787 /* Octopus */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Octopus; sourceTree = BUILT_PRODUCTS_DIR; };
-		9528CAFB245B794D009D7787 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		9528CB03245B9A01009D7787 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
+		95F4B00C245F8C4800BF7BF0 /* Graphics.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Graphics.cpp; sourceTree = "<group>"; };
+		95F4B00D245F8C4800BF7BF0 /* Graphics.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Graphics.hpp; sourceTree = "<group>"; };
+		95F4B00F245F93A300BF7BF0 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		95F4B011245F950E00BF7BF0 /* OctopusCore.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OctopusCore.cpp; sourceTree = "<group>"; };
+		95F4B012245F950E00BF7BF0 /* OctopusCore.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = OctopusCore.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,7 +79,11 @@
 		9528CAFA245B794D009D7787 /* Octopus */ = {
 			isa = PBXGroup;
 			children = (
-				9528CAFB245B794D009D7787 /* main.cpp */,
+				95F4B00C245F8C4800BF7BF0 /* Graphics.cpp */,
+				95F4B00D245F8C4800BF7BF0 /* Graphics.hpp */,
+				95F4B00F245F93A300BF7BF0 /* main.cpp */,
+				95F4B011245F950E00BF7BF0 /* OctopusCore.cpp */,
+				95F4B012245F950E00BF7BF0 /* OctopusCore.hpp */,
 			);
 			path = Octopus;
 			sourceTree = "<group>";
@@ -144,7 +154,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9528CAFC245B794D009D7787 /* main.cpp in Sources */,
+				95F4B013245F950E00BF7BF0 /* OctopusCore.cpp in Sources */,
+				95F4B010245F93A300BF7BF0 /* main.cpp in Sources */,
+				95F4B00E245F8C4800BF7BF0 /* Graphics.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
