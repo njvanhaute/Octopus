@@ -12,9 +12,7 @@
 
 int main(int argc, char **argv) {
     Graphics *graphics;
-    OctopusCore *core;
-    
-    bool quit = false;
+    OctopusCore *core;    
     
     try {
         graphics = new Graphics();
@@ -25,6 +23,7 @@ int main(int argc, char **argv) {
     }
     
     SDL_Event event;
+    bool quit = false;
     while (!quit) {
         
         while (SDL_PollEvent(&event)) {
