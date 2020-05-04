@@ -40,6 +40,7 @@ OctopusCore::OctopusCore() {
       0xF0, 0x80, 0xF0, 0x80, 0x80  // F
     };
     
+    // ALL NOPs for now; Will be implemented later
     MethodPointer vt[16] = {
         &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::NOP,
         &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::NOP,
