@@ -10,6 +10,8 @@
 #include "OctopusCore.hpp"
 
 #define CALL_METHOD(object,ptrToMember) ((object)->*(ptrToMember))
+#define FONTSET_SIZE 80
+#define VLT_SIZE 16
 
 OctopusCore::OctopusCore() {
     pc          = 0x200;
@@ -20,7 +22,7 @@ OctopusCore::OctopusCore() {
     sound_timer = 0;
     drawFlag    = false;
     
-    unsigned char chip8_fontset[80] =
+    unsigned char chip8_fontset[FONTSET_SIZE] =
     {
       0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
       0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -41,18 +43,18 @@ OctopusCore::OctopusCore() {
     };
     
     // ALL NOPs for now; Will be implemented later
-    MethodPointer vt[16] = {
+    MethodPointer vt[VLT_SIZE] = {
         &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::NOP,
         &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::NOP,
         &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::NOP,
         &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::NOP,
     };
     
-    for (int i = 0; i < 80; i++) {
+    for (int i = 0; i < FONTSET_SIZE; i++) {
         memory[i] = chip8_fontset[i];
     }
     
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < VLT_SIZE; i++) {
         vtable[i] = vt[i];
     }
     
