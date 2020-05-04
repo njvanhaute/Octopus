@@ -6,14 +6,14 @@
 //  Copyright © 2020 Nicholas Vanhaute. All rights reserved.
 //
 
-#include <iostream>
 #include <fstream>
+#include <iostream>
+
+#include "FileLoader.hpp"
 #include "Graphics.hpp"
 #include "OctopusCore.hpp"
 
 #define BUF_SIZE 4096
-
-int readFileIntoBuffer(char const *, char *);
 
 int main(int argc, char **argv) {
     Graphics *graphics;
@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
     bool quit = false;
     
     char *buf = new char[BUF_SIZE];
-    int romLen = readFileIntoBuffer("/Users/njvanhaute/Desktop/pong.ch8", buf);
+    int romLen = readFileIntoBuffer("/Users/njvanhaute/Desktop/pong.ch8", buf, BUF_SIZE);
     
     if (core->loadROM(buf, romLen) != 0) {
         std::cerr << "Could not load ROM into core memory." << std::endl;
@@ -52,11 +52,4 @@ int main(int argc, char **argv) {
     delete graphics;
     delete core;
     return 0;
-}
-
-// Returns size of useful buffer
-int readFileIntoBuffer(char const *filepath, char *buf) {
-    std::ifstream fin(filepath, std::ios::in | std::ios::binary);
-    fin.read(buf, BUF_SIZE);
-    return (int) fin.gcount();
 }

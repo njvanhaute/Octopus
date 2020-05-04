@@ -12,6 +12,7 @@
 		95F4B00E245F8C4800BF7BF0 /* Graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95F4B00C245F8C4800BF7BF0 /* Graphics.cpp */; };
 		95F4B010245F93A300BF7BF0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95F4B00F245F93A300BF7BF0 /* main.cpp */; };
 		95F4B013245F950E00BF7BF0 /* OctopusCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95F4B011245F950E00BF7BF0 /* OctopusCore.cpp */; };
+		95F4B0162460916C00BF7BF0 /* FileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95F4B0142460916C00BF7BF0 /* FileLoader.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -45,6 +46,8 @@
 		95F4B00F245F93A300BF7BF0 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		95F4B011245F950E00BF7BF0 /* OctopusCore.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OctopusCore.cpp; sourceTree = "<group>"; };
 		95F4B012245F950E00BF7BF0 /* OctopusCore.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = OctopusCore.hpp; sourceTree = "<group>"; };
+		95F4B0142460916C00BF7BF0 /* FileLoader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FileLoader.cpp; sourceTree = "<group>"; };
+		95F4B0152460916C00BF7BF0 /* FileLoader.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FileLoader.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +87,8 @@
 				95F4B00F245F93A300BF7BF0 /* main.cpp */,
 				95F4B011245F950E00BF7BF0 /* OctopusCore.cpp */,
 				95F4B012245F950E00BF7BF0 /* OctopusCore.hpp */,
+				95F4B0142460916C00BF7BF0 /* FileLoader.cpp */,
+				95F4B0152460916C00BF7BF0 /* FileLoader.hpp */,
 			);
 			path = Octopus;
 			sourceTree = "<group>";
@@ -156,6 +161,7 @@
 			files = (
 				95F4B013245F950E00BF7BF0 /* OctopusCore.cpp in Sources */,
 				95F4B010245F93A300BF7BF0 /* main.cpp in Sources */,
+				95F4B0162460916C00BF7BF0 /* FileLoader.cpp in Sources */,
 				95F4B00E245F8C4800BF7BF0 /* Graphics.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
