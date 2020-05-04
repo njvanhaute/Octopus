@@ -18,6 +18,9 @@
 int main(int argc, char **argv) {
     Graphics *graphics;
     OctopusCore *core;
+    SDL_Event event;
+    bool quit = false;
+    char *buf = new char[BUF_SIZE];
     
     try {
         graphics = new Graphics();
@@ -27,12 +30,7 @@ int main(int argc, char **argv) {
         return 1;
     }
     
-    SDL_Event event;
-    bool quit = false;
-    
-    char *buf = new char[BUF_SIZE];
     int romLen = readFileIntoBuffer("/Users/njvanhaute/Desktop/pong.ch8", buf, BUF_SIZE);
-    
     if (core->loadROM(buf, romLen) != 0) {
         std::cerr << "Could not load ROM into core memory." << std::endl;
         return 1;
@@ -42,6 +40,11 @@ int main(int argc, char **argv) {
     
     while (!quit) {
         
+        
+        
+        
+        
+        // Process user input
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 quit = true;

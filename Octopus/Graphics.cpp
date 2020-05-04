@@ -12,7 +12,7 @@
 const int SCREEN_X               = 100;
 const int SCREEN_Y               = 100;
 const int SCREEN_WIDTH           = 640;
-const int SCREEN_HEIGHT          = 480;
+const int SCREEN_HEIGHT          = 320;
 const int RENDERER_INDEX_DEFAULT =  -1;
 
 const char *WINDOW_TITLE = "Octopus";

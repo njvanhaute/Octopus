@@ -6,7 +6,10 @@
 //  Copyright © 2020 Nicholas Vanhaute. All rights reserved.
 //
 
+#include <functional>
 #include "OctopusCore.hpp"
+
+#define CALL_METHOD(object,ptrToMember) ((object)->*(ptrToMember))
 
 OctopusCore::OctopusCore() {
     pc          = 0x200;
@@ -15,7 +18,7 @@ OctopusCore::OctopusCore() {
     sp          = 0;
     delay_timer = 0;
     sound_timer = 0;
-    
+    drawFlag    = false;
     
     unsigned char chip8_fontset[80] =
     {
@@ -37,8 +40,19 @@ OctopusCore::OctopusCore() {
       0xF0, 0x80, 0xF0, 0x80, 0x80  // F
     };
     
+    MethodPointer vt[16] = {
+        &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::NOP,
+        &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::NOP,
+        &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::NOP,
+        &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::NOP,
+    };
+    
     for (int i = 0; i < 80; i++) {
         memory[i] = chip8_fontset[i];
+    }
+    
+    for (int i = 0; i < 16; i++) {
+        vtable[i] = vt[i];
     }
     
     for (int i = 0; i < NUM_REGISTERS; i++) {
@@ -60,7 +74,11 @@ OctopusCore::OctopusCore() {
 
 OctopusCore::~OctopusCore() {}
 
-void OctopusCore::emulateCycle() {}
+void OctopusCore::emulateCycle() {
+    fetchOpcode();
+    execute();
+    drawFlag = false;
+}
 
 // Returns 0 if successful, 1 otherwise
 int OctopusCore::loadROM(char *buf, int bufSize) {
@@ -74,3 +92,20 @@ int OctopusCore::loadROM(char *buf, int bufSize) {
     
     return 0;
 }
+
+bool OctopusCore::drawFlagIsSet() {
+    return drawFlag;
+}
+
+void OctopusCore::fetchOpcode() {
+    opcode = memory[pc] << 8 | memory[pc + 1];
+    pc += 2;
+}
+
+void OctopusCore::execute() {
+    MethodPointer method = vtable[(opcode & 0xF000) >> 12];
+    CALL_METHOD(this, method)();
+}
+                            
+
+void OctopusCore::NOP() {}
