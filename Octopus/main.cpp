@@ -14,6 +14,8 @@ int main(int argc, char **argv) {
     Graphics *graphics;
     OctopusCore *core;
     
+    bool quit = false;
+    
     try {
         graphics = new Graphics();
         core = new OctopusCore();
@@ -22,4 +24,17 @@ int main(int argc, char **argv) {
         return 1;
     }
     
+    SDL_Event event;
+    while (!quit) {
+        
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                quit = true;
+            }
+        }
+    }
+    
+    delete graphics;
+    delete core;
+    return 0;
 }
