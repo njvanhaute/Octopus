@@ -61,3 +61,16 @@ OctopusCore::OctopusCore() {
 OctopusCore::~OctopusCore() {}
 
 void OctopusCore::emulateCycle() {}
+
+// Returns 0 if successful, 1 otherwise
+int OctopusCore::loadROM(char *buf, int bufSize) {
+    for (int i = 0; i < bufSize; i++) {
+        if (i + 512 >= MEM_SIZE) {
+            // Overflowed memory
+            return 1;
+        }
+        memory[i + 512] = buf[i];
+    }
+    
+    return 0;
+}

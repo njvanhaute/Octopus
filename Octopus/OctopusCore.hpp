@@ -33,6 +33,7 @@ public:
     OctopusCore();
     ~OctopusCore();
     void emulateCycle();
+    int loadROM(char *, int);
 };
 
 #endif /* OctopusCore_hpp */
