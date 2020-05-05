@@ -9,6 +9,9 @@
 #ifndef OctopusCore_hpp
 #define OctopusCore_hpp
 
+#include <chrono>
+#include <random>
+
 class OctopusCore {
     typedef void (OctopusCore::*MethodPointer)();
     
@@ -31,13 +34,52 @@ class OctopusCore {
     unsigned short sp;
     unsigned char key[NUM_KEYS];
     
-    MethodPointer vtable[16];
+    MethodPointer methodTable[16];
+    MethodPointer arithmeticTable[16];
+    
+    std::default_random_engine RandomNumberGenerator;
+    std::uniform_int_distribution<int> RNGDistribution;
     
     bool drawFlag;
     
     void fetchOpcode();
     void execute();
+    void clearDisplay();
     void NOP();
+    void cpuSys();
+    void cpuJmp();
+    void cpuCall();
+    void cpuSEA();
+    void cpuSEB();
+    void cpuSNEA();
+    void cpuLoadA();
+    void cpuAddA();
+    void cpuLoadB();
+    void cpuOr();
+    void cpuAnd();
+    void cpuXor();
+    void cpuAddB();
+    void cpuSub();
+    void cpuSHR();
+    void cpuSubN();
+    void cpuSHL();
+    void cpuSNEB();
+    void cpuLoadIndex();
+    void cpuJmpReg();
+    void cpuRand();
+    void cpuDraw();
+    void cpuSKP();
+    void cpuLoadRegFromDelay();
+    void cpuWaitForKeyPress();
+    void cpuSetDelayTimer();
+    void cpuSetSoundTimer();
+    void cpuAddIndex();
+    void cpuSetSpriteLoc();
+    void cpuBCD();
+    void cpuMoveRegToMem();
+    void cpuMoveMemToReg();
+    void cpuArithmetic();
+    void cpuMisc();
     
 public:
     OctopusCore();

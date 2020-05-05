@@ -41,13 +41,14 @@ int main(int argc, char **argv) {
     while (!quit) {
         
         
-        
+        core->emulateCycle();
         
         
         // Process user input
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 quit = true;
+                
             }
         }
     }
