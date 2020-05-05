@@ -14,6 +14,8 @@
 #define FONTSET_SIZE 80
 #define VLT_SIZE 16
 
+bool getBit(short byte, short bitNum);
+
 OctopusCore::OctopusCore() {
     pc          = 0x200;
     opcode      = 0;
@@ -58,25 +60,25 @@ OctopusCore::OctopusCore() {
         &OctopusCore::NOP, &OctopusCore::NOP, &OctopusCore::cpuSHL, &OctopusCore::NOP
     };
     
-    for (int i = 0; i < FONTSET_SIZE; i++) {
+    for (short i = 0; i < FONTSET_SIZE; i++) {
         memory[i] = chip8_fontset[i];
     }
     
-    for (int i = 0; i < VLT_SIZE; i++) {
+    for (short i = 0; i < VLT_SIZE; i++) {
         methodTable[i] = vt[i];
         arithmeticTable[i] = at[i];
     }
     
-    for (int i = 0; i < NUM_REGISTERS; i++) {
+    for (short i = 0; i < NUM_REGISTERS; i++) {
         V[i] = 0;
     }
     
-    for (int i = 0; i < STACK_SIZE; i++) {
+    for (short i = 0; i < STACK_SIZE; i++) {
         stack[i] = 0;
     }
     
-    for (int i = 0; i < NUM_KEYS; i++) {
-        key[i] = 0;
+    for (short i = 0; i < NUM_KEYS; i++) {
+        key[i] = false;
     }
     
     clearDisplay();
@@ -95,6 +97,12 @@ void OctopusCore::emulateCycle() {
     drawFlag = false;
     fetchOpcode();
     execute();
+}
+
+void OctopusCore::updateKeyState(bool *newKeyState) {
+    for (short i = 0; i < NUM_KEYS; i++) {
+        key[i] = newKeyState[i];
+    }
 }
 
 // Returns 0 if successful, 1 otherwise
@@ -124,8 +132,8 @@ void OctopusCore::execute() {
 }
                             
 void OctopusCore::clearDisplay() {
-    for (int i = 0; i < NUM_PIXEL_ROWS * NUM_PIXEL_COLS; i++) {
-        gfx[i] = 0;
+    for (short i = 0; i < NUM_PIXEL_ROWS * NUM_PIXEL_COLS; i++) {
+        gfx[i] = false;
     }
 }
 
@@ -166,7 +174,7 @@ void OctopusCore::cpuSEA() {
 
 void OctopusCore::cpuSEB() {
     short x = (opcode & 0xF00) >> 8;
-    short y = (opcode &  0xF0) >> 4;
+    short y = (opcode & 0x0F0) >> 4;
     if (V[x] == V[y]) {
         pc += 2;
     }
@@ -200,35 +208,35 @@ void OctopusCore::cpuArithmetic() {
 
 void OctopusCore::cpuLoadB() {
     short x = (opcode & 0xF00) >> 8;
-    short y = (opcode &  0xF0) >> 4;
+    short y = (opcode & 0x0F0) >> 4;
     V[x] = V[y];
     pc += 2;
 }
 
 void OctopusCore::cpuOr() {
     short x = (opcode & 0xF00) >> 8;
-    short y = (opcode &  0xF0) >> 4;
+    short y = (opcode & 0x0F0) >> 4;
     V[x] |= V[y];
     pc += 2;
 }
 
 void OctopusCore::cpuAnd() {
     short x = (opcode & 0xF00) >> 8;
-    short y = (opcode &  0xF0) >> 4;
+    short y = (opcode & 0x0F0) >> 4;
     V[x] &= V[y];
     pc += 2;
 }
 
 void OctopusCore::cpuXor() {
     short x = (opcode & 0xF00) >> 8;
-    short y = (opcode &  0xF0) >> 4;
+    short y = (opcode & 0x0F0) >> 4;
     V[x] ^= V[y];
     pc += 2;
 }
 
 void OctopusCore::cpuAddB() {
     short x = (opcode & 0xF00) >> 8;
-    short y = (opcode &  0xF0) >> 4;
+    short y = (opcode & 0x0F0) >> 4;
     short total = V[x] + V[y];
     
     V[0xF] = (total > 0xFF) ? 1 : 0;
@@ -238,7 +246,7 @@ void OctopusCore::cpuAddB() {
 
 void OctopusCore::cpuSub() {
     short x = (opcode & 0xF00) >> 8;
-    short y = (opcode &  0xF0) >> 4;
+    short y = (opcode & 0x0F0) >> 4;
     
     V[0xF] = V[x] > V[y] ? 1 : 0;
     V[x] = V[x] - V[y];
@@ -254,7 +262,7 @@ void OctopusCore::cpuSHR() {
 
 void OctopusCore::cpuSubN() {
     short x = (opcode & 0xF00) >> 8;
-    short y = (opcode &  0xF0) >> 4;
+    short y = (opcode & 0x0F0) >> 4;
     
     V[0xF] = V[x] < V[y] ? 1 : 0;
     V[x] = V[y] - V[x];
@@ -270,7 +278,7 @@ void OctopusCore::cpuSHL() {
 
 void OctopusCore::cpuSNEB() {
     short x = (opcode & 0xF00) >> 8;
-    short y = (opcode &  0xF0) >> 4;
+    short y = (opcode & 0x0F0) >> 4;
     
     if (V[x] != V[y]) {
         pc += 2;
@@ -296,7 +304,32 @@ void OctopusCore::cpuRand() {
 }
 
 void OctopusCore::cpuDraw() {
+    short x = (opcode & 0xF00) >> 8;
+    short y = (opcode & 0x0F0) >> 4;
+    const short spriteSize = opcode & 0xF;
+    short sprite[spriteSize];
     
+    V[0xF] = 0;
+    
+    for (short i = 0; i < spriteSize; i++) {
+        sprite[i] = memory[I + i];
+    }
+    
+    for (short i = 0; i < spriteSize; i++) {
+        for (short j = 7; j >= 0; j--) {
+            short screenPosX = (x + 7 - j) % 64;
+            short screenPosY = (y + i) % 32;
+            short oneDimPos = screenPosY * 64 + screenPosX;
+            bool bit = getBit(sprite[i], j);
+            if (gfx[oneDimPos] && !bit) {
+                V[0xF] = 1;
+            }
+            gfx[oneDimPos] = bit;
+        }
+    }
+    
+    drawFlag = true;
+    pc += 2;
 }
 
 void OctopusCore::cpuSKP() {
@@ -317,9 +350,23 @@ void OctopusCore::cpuMisc() {
             V[x] = delay_timer;
             break;
             
-        case 0x0A:
-            
+        case 0x0A: {
+            bool anyKeyPressed = false;
+            short keyIndex = -1;
+            for (short i = 0; i < NUM_KEYS; i++) {
+                if (key[i]) {
+                    anyKeyPressed = true;
+                    keyIndex = i;
+                }
+            }
+            if (anyKeyPressed) {
+                V[x] = keyIndex;
+            } else {
+                pc -= 2;
+            }
             break;
+        }
+            
         case 0x15:
             delay_timer = V[x];
             break;
@@ -330,16 +377,22 @@ void OctopusCore::cpuMisc() {
             I += V[x];
             break;
         case 0x29:
+            I = V[x] * 5;
             break;
-        case 0x33:
+        case 0x33: {
+            short num = V[x];
+            memory[I] = num / 100;
+            memory[I + 1] = (num / 10) % 10;
+            memory[I + 2] = num % 10;
             break;
+        }
         case 0x55:
-            for (int i = 0; i < x + 1; i++) {
+            for (short i = 0; i < x + 1; i++) {
                 memory[I + i] = V[i];
             }
             break;
         case 0x65:
-            for (int i = 0; i < x + 1; i++) {
+            for (short i = 0; i < x + 1; i++) {
                 V[i] = memory[I + i];
             }
             break;
@@ -348,4 +401,9 @@ void OctopusCore::cpuMisc() {
             break;
     }
     pc += 2;
+}
+
+// Bytes are zero-indexed
+bool getBit(short byte, short bitNum) {
+    return (byte & (1 << (bitNum))) != 0;
 }

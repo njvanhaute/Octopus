@@ -27,12 +27,12 @@ class OctopusCore {
     unsigned char V[NUM_REGISTERS];
     unsigned short I;
     unsigned short pc;
-    unsigned char gfx[NUM_PIXEL_COLS * NUM_PIXEL_ROWS];
+    bool gfx[NUM_PIXEL_COLS * NUM_PIXEL_ROWS];
     unsigned char delay_timer;
     unsigned char sound_timer;
     unsigned short stack[STACK_SIZE];
     unsigned short sp;
-    unsigned char key[NUM_KEYS];
+    bool key[NUM_KEYS];
     
     MethodPointer methodTable[16];
     MethodPointer arithmeticTable[16];
@@ -85,6 +85,7 @@ public:
     OctopusCore();
     ~OctopusCore();
     void emulateCycle();
+    void updateKeyState(bool *);
     int loadROM(char *, int);
     bool drawFlagIsSet();
 };
